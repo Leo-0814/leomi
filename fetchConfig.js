@@ -2,6 +2,7 @@ import "dotenv/config";
 import fs from "fs";
 import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
+import os from "os";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,9 +11,14 @@ const __dirname = path.dirname(__filename);
 
 const SPREADSHEET_ID = "1oQIoocwSilenVo9nulBt52S_hMZz4Yb_ob0Y5NRxqMY";
 const CREDENTIALS_PATH = path.join(
-  __dirname,
-  "./tailwind-css-480106-0a2a43bb5b85.json"
+  os.homedir(),
+  ".google-sheets",
+  "credentials.json"
 );
+
+const CONFIG_SHEET_NAME = "config-pc";
+const LOCALE_SHEET_NAME = "i18n";
+const CONFIG_OUTPUT_FILE = path.join(__dirname, "versionConfig.json");
 
 if (!SPREADSHEET_ID || !CREDENTIALS_PATH) {
   console.error("錯誤：請檢查您的設定。");
@@ -20,10 +26,6 @@ if (!SPREADSHEET_ID || !CREDENTIALS_PATH) {
 }
 // 載入憑證 JSON
 const creds = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, "utf-8"));
-
-const CONFIG_SHEET_NAME = "config-pc";
-const LOCALE_SHEET_NAME = "i18n";
-const CONFIG_OUTPUT_FILE = path.join(__dirname, "versionConfig.json");
 
 /**
  * 解析值並轉換為適當的類型

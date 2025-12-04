@@ -87,24 +87,34 @@ function createFilePriorityPlugin(): Plugin {
         ".module.scss",
       ];
 
-      // 首先檢查是否是目錄或可能是目錄（提前查找 index.{project}.{ext}）
-      // 這樣可以處理 Vite 在解析目錄導入時的情況
-      for (const project of baseProjects) {
-        for (const ext of extensions) {
-          // 嘗試查找目錄下的 index.{project}.{ext} 文件
-          // 例如: ./pages/App -> ./pages/App/index.test.tsx
-          const indexFile = path.join(sourcePath, `index.${project}${ext}`);
-          if (fs.existsSync(indexFile)) {
-            return indexFile;
-          }
-        }
-      }
-
-      // 檢查是否為目錄
+      // 檢查是否為目錄，如果是則按照優先級順序查找 index 文件
       try {
         const stat = fs.statSync(sourcePath);
         if (stat.isDirectory()) {
-          // 如果確實是目錄但沒找到帶項目前綴的文件，返回 null 讓 Vite 使用默認解析
+          // 目錄導入：按照優先級順序查找 index 文件
+          // 優先級順序：
+          // 1. 帶項目前綴的 index 文件（index.{project}.{ext}），按擴展名優先級
+          // 2. 普通的 index 文件（index.{ext}），按擴展名優先級
+
+          // 1. 先查找帶項目前綴的 index 文件
+          for (const project of baseProjects) {
+            for (const ext of extensions) {
+              const indexFile = path.join(sourcePath, `index.${project}${ext}`);
+              if (fs.existsSync(indexFile)) {
+                return indexFile;
+              }
+            }
+          }
+
+          // 2. 再查找普通的 index 文件
+          for (const ext of extensions) {
+            const indexFile = path.join(sourcePath, `index${ext}`);
+            if (fs.existsSync(indexFile)) {
+              return indexFile;
+            }
+          }
+
+          // 如果都沒找到，返回 null 讓 Vite 使用默認解析
           return null;
         }
       } catch {
@@ -178,7 +188,12 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler"]],
+        plugins: [
+          ["babel-plugin-react-compiler"],
+          ...(process.env.VITE_APP_ENV === "production"
+            ? [["transform-remove-console", { include: ["error", "warn"] }]]
+            : []),
+        ],
       },
     }),
     createFilePriorityPlugin(),

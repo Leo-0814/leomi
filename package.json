@@ -16,11 +16,14 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "dotenv": "^17.2.3",
     "google-auth-library": "^10.5.0",
+    "google-sheets-fetcher": "^1.0.0",
     "google-spreadsheet": "^5.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "sass": "^1.94.2",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
