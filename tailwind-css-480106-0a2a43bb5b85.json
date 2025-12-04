@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "tailwind-css-480106",
+  "private_key_id": "0a2a43bb5b854736d355c9ebaaaaff5a592fd27b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChllSsHkcEn409\nHqZBhjvvFJh57PtQPROFn6WPgiMsRzCkzO8ck542tl7vNFI7+JTtOgp23Kx476YH\nZeN8G0EpgNhYsChJtTta/Ndu+0kmE/4f6AYlfpNgPJYjlimAQvdyQySKkL/lEJ9z\nw1Udzg0+suLG7xttGWEwNQ1cxfB1PGYu8hLQAzj1jPXaBJFEB/dPF94yEXWyRfeS\nwoUEhKa9WXCzG7RB0/plo/rRNgM/avX7hKUekD9znl/hCdTqvJPYkLTDEA2+3XSi\nmPZ58b2zJQ0A3XmB/OqXuK5r7N42TJbdFn6QLbsJIBzjmfA738zk+pm2jabweH7R\ndoLbras7AgMBAAECggEAFxInkRLvm+A198SLrgOpmgH29ULvQkO+KPrO1isZX4Xj\nPZx0WsBUO3FAI7zKLaguh00dV7Q75zZ8SPEfZkWz65DrEtqanfouI9hsNVB+igfF\nEFl99dYuhPPm5zorlGsQo8lPYH4N+qQsHV4F0JrDYbDZLS3QMicIrSvd9mGH6rep\n+6VsMQdolYGjV93pukvLbt7aCH5jTTsFxhkT0Oy64s6MmMwysfSiLKV/IkJG2xSy\n4UMyP34y69xHjKS9l3JYMxxR5iQ8OLR47mQiXkDo50YqRMXzrZ3jiBLyiHNmCgOe\nBwhuphh9tlDMWWkvBEEFwYEdQ/P7ObHZahQtKOJMGQKBgQDVFPhDPJ5U2IyzEIhP\nckW7sor7+tgAGpYyxR/UKuKecUBh12jIzXfmkdKTXirbQ9oBR/VHUMqiSnazgGJG\nJ8OBGm7HhDusxvtzr87MCd90exSF7OmYz6wtQcj+f9/C4pmAcaDys+i7oFEc1qYu\n35maXQLsXbUdSXjAt8C41j4aeQKBgQDCIirzlxuLOPzKWpfxCFIL+I8aM09MFOFb\nNq3E1epbFEKyMaI3qskP1szKgh7kcUaM5Pe/rKWD7zVSwKX25JI5J9LAGHI7sGqk\nnvz6PBwRJ+4fdowig+Gavdq2vLfLH2rXWWmiwRy3nceCLl6z1nwHqfIs2uODRd+g\nAgBVyT5GUwKBgGwDHjnPD5+IygG3HrHPBkQ4JDXJGRcsYvjHbfP57ThNxkoSjH5F\nkULipnCnamgNhAPkOxR0gtMzleo16RsQ6wyVnpQqlqllkG87LkPFuWztOyEMT/lz\nRB8I2t8PaRj8Dr3KW8DLq+z4PkW1FTZriAx0m5e/hKCc7sYaH2pSx9ZZAoGAJFWU\nyGadxx7xYUY3betqv8bTscmsq8a0rwe62j5XUJioKwXTIKwcWZSQW86izYrN84zf\nOcasa9cXmddouJ7rJztm3IE20CkirJD9NDCP6D4a+VSMweEBFp82EkGb/K5ypr+b\nX9TY9RzYvGrFWs9oA18xbmfBcU5gnmgBfAzgVPUCgYEAk3bd8MNBcux9JxANlX/M\nNkcw0eAms+bIcU9dEhz1KzmDIiTpwqvyNAT0AWbRM1R2w8h2VjP33igLWV+FM62r\ntE6yzfJ6NHQm5G7QrcF1zZcHN/Fw+0D1RwllSHj3bXagJhsS8KZkhdt3h0Aw7qHi\nynvs4m+4apjwl2MPoPL5R1E=\n-----END PRIVATE KEY-----\n",
+  "client_email": "leo-821@tailwind-css-480106.iam.gserviceaccount.com",
+  "client_id": "109449624164148605101",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/leo-821%40tailwind-css-480106.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
