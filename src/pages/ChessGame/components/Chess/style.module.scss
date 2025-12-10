@@ -1,0 +1,59 @@
+.chess {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  // 立体渐变背景（扎实的鲜红色渐变，从顶部亮到底部暗）
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(60, 60, 60, 1) 0%,
+    rgba(30, 30, 30, 1) 50%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  // 多层阴影增强立体感
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+  &.red {
+    background: radial-gradient(
+      ellipse at 50% 30%,
+      rgba(240, 40, 40, 1) 0%,
+      rgba(210, 15, 15, 1) 50%,
+      rgba(180, 8, 8, 1) 100%
+    );
+  }
+  // 上方反光（內側邊緣）
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    border-radius: 100% 100% 0 0;
+    background: radial-gradient(
+      ellipse at center top,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.2) 30%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  .inner {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 60px;
+    position: relative;
+    z-index: 2;
+    // 文字阴影增强立体感
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+}

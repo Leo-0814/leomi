@@ -12,6 +12,7 @@
  * 例如：App.vincetrust.tsx, index.vincetrust.ts 等
  */
 
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path from "path";
@@ -190,12 +191,13 @@ export default defineConfig({
       babel: {
         plugins: [
           ["babel-plugin-react-compiler"],
-          ...(process.env.VITE_APP_ENV === "production"
-            ? [["transform-remove-console", { include: ["error", "warn"] }]]
-            : []),
+          // ...(process.env.VITE_APP_ENV === "production"
+          //   ? [["transform-remove-console", { include: ["error", "warn"] }]]
+          //   : []),
         ],
       },
     }),
     createFilePriorityPlugin(),
+    tailwindcss(),
   ],
 });
