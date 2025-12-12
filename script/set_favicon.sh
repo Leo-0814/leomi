@@ -1,15 +1,31 @@
 #!/bin/bash
 
 # Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Use a more compatible method for getting script directory
+if [ -n "${BASH_SOURCE[0]}" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+else
+  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+fi
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
+# 檢查 .env 文件是否存在
+ENV_FILE="$PROJECT_ROOT/.env"
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Error: .env file not found at $ENV_FILE"
+  echo "Current directory: $(pwd)"
+  echo "Project root: $PROJECT_ROOT"
+  exit 1
+fi
+
 # 只讀取 VITE_APP_PRODUCTION_NAME_DEV 這一行，去除空格和雙引號
-VITE_APP_PRODUCTION_NAME_DEV=$(grep '^VITE_APP_PRODUCTION_NAME_DEV' "$PROJECT_ROOT/.env" | sed -E 's/VITE_APP_PRODUCTION_NAME_DEV[[:space:]]*=[[:space:]]*"?([^"]*)"?/\1/')
+VITE_APP_PRODUCTION_NAME_DEV=$(grep '^VITE_APP_PRODUCTION_NAME_DEV' "$ENV_FILE" | sed -E 's/VITE_APP_PRODUCTION_NAME_DEV[[:space:]]*=[[:space:]]*"?([^"]*)"?/\1/')
 
 # 檢查變量是否有值
 if [ -z "$VITE_APP_PRODUCTION_NAME_DEV" ]; then
-  echo "VITE_APP_PRODUCTION_NAME_DEV is not set in .env"
+  echo "Error: VITE_APP_PRODUCTION_NAME_DEV is not set in .env"
+  echo "Contents of .env file:"
+  cat "$ENV_FILE" || echo "Could not read .env file"
   exit 1
 fi
 

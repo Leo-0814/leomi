@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "f() { yarn fetchAll && yarn setV \"$@\" && sh ./script/set_favicon.sh && vite; }; f",
-    "build": "f() { yarn fetchAll && yarn setV \"$@\" && sh ./script/set_favicon.sh && tsc -b && vite build; }; f",
+    "start": "f() { yarn fetchAll && yarn setV \"$@\" && bash ./script/set_favicon.sh && vite; }; f",
+    "build": "f() { yarn fetchAll && yarn setV \"$@\" && bash ./script/set_favicon.sh && tsc -b && vite build; }; f",
     "lint": "eslint .",
     "preview": "vite preview",
     "fetchAll": "node fetchConfig.js all",
