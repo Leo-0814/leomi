@@ -36,12 +36,33 @@ SRC_FILE="$SRC_DIR/favicon.ico"
 DEST_FILE="$DEST_DIR/favicon.ico"
 
 echo "Using VITE_APP_PRODUCTION_NAME_DEV: $VITE_APP_PRODUCTION_NAME_DEV"
+echo "Project root: $PROJECT_ROOT"
 echo "Source directory: $SRC_DIR"
 echo "Destination directory: $DEST_DIR"
+echo "Current working directory: $(pwd)"
+
+# Debug: List public/images directory
+if [ -d "$PROJECT_ROOT/public/images" ]; then
+  echo "Contents of public/images:"
+  ls -la "$PROJECT_ROOT/public/images" || true
+  if [ -d "$PROJECT_ROOT/public/images/$VITE_APP_PRODUCTION_NAME_DEV" ]; then
+    echo "Contents of public/images/$VITE_APP_PRODUCTION_NAME_DEV:"
+    ls -la "$PROJECT_ROOT/public/images/$VITE_APP_PRODUCTION_NAME_DEV" || true
+  else
+    echo "Warning: public/images/$VITE_APP_PRODUCTION_NAME_DEV does not exist"
+    echo "Available directories in public/images:"
+    ls -d "$PROJECT_ROOT/public/images"/*/ 2>/dev/null | xargs -n1 basename || true
+  fi
+else
+  echo "Error: public/images directory does not exist at $PROJECT_ROOT/public/images"
+  exit 1
+fi
 
 # Check if source directory exists
 if [ ! -d "$SRC_DIR" ]; then
   echo "Error: Source directory does not exist: $SRC_DIR"
+  echo "Please ensure the directory structure is correct:"
+  echo "  public/images/$VITE_APP_PRODUCTION_NAME_DEV/logo/favicon.ico"
   exit 1
 fi
 
