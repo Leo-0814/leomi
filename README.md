@@ -15,10 +15,12 @@ This template provides a minimal setup to get React working in Vite with HMR and
 ### 🚀 步骤 1: 启用 GitHub Pages
 
 1. **打开仓库设置**
+
    - 进入你的 GitHub 仓库
    - 点击右上角的 **Settings**（设置）
 
 2. **配置 Pages**
+
    - 在左侧菜单中找到 **Pages**（页面）
    - 在 **Source**（源）部分，选择 **GitHub Actions**
    - 不要选择 "Deploy from a branch"
@@ -46,11 +48,13 @@ git push origin main
 ### 👀 步骤 3: 查看 CI/CD 状态
 
 1. **查看 Actions**
+
    - 在仓库顶部点击 **Actions** 标签页
    - 你会看到 "Deploy to GitHub Pages" workflow 正在运行
    - 点击进入可以查看详细的构建日志
 
 2. **部署流程**
+
    - ✅ **Checkout**: 检出代码
    - ✅ **Setup Node.js**: 设置 Node.js 环境
    - ✅ **Install dependencies**: 安装依赖
@@ -92,15 +96,15 @@ CI/CD 会在以下情况自动触发：
 
 ```yaml
 # 修改 Node.js 版本
-node-version: "20"  # 改为你需要的版本
+node-version: "20" # 改为你需要的版本
 
 # 修改构建命令
-run: yarn build  # 改为你的构建命令
+run: yarn build # 改为你的构建命令
 
 # 添加环境变量
 env:
   VITE_APP_ENV: production
-  VITE_BASE_PATH: /  # 自定义 base 路径
+  VITE_BASE_PATH: / # 自定义 base 路径
 ```
 
 ### 🎯 自定义域名（可选）
@@ -108,11 +112,14 @@ env:
 如果使用自定义域名：
 
 1. **在 GitHub 设置域名**
+
    - Settings → Pages → Custom domain
    - 输入你的域名
 
 2. **设置环境变量**
+
    - 在 workflow 文件中添加：
+
    ```yaml
    env:
      VITE_BASE_PATH: /
@@ -132,16 +139,19 @@ env:
 ### 🐛 故障排除
 
 **问题**: Actions 显示失败
+
 - 检查构建日志中的错误信息
 - 确保 `package.json` 中的脚本正确
 - 检查 Node.js 版本是否兼容
 
 **问题**: 网站无法访问
+
 - 确认 GitHub Pages 已启用（Settings → Pages）
 - 等待几分钟让 DNS 生效
 - 检查 URL 是否正确（注意大小写）
 
 **问题**: 路由不工作
+
 - 确认 `404.html` 文件已创建（workflow 会自动处理）
 - 检查 `vite.config.ts` 中的 base 路径配置
 
@@ -168,9 +178,9 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
 
@@ -185,40 +195,40 @@ export default defineConfig([
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
       // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
+      reactX.configs["recommended-typescript"],
       // Enable lint rules for React DOM
       reactDom.configs.recommended,
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
