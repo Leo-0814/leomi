@@ -5,6 +5,7 @@
 ## 📋 步骤 1: 获取 Google Sheets 凭证文件
 
 1. **找到你的凭证文件**
+
    - 本地路径通常是：`~/.google-sheets/credentials.json`
    - 或者在你的项目目录中查找
 
@@ -15,14 +16,17 @@
 ## 🔐 步骤 2: 在 GitHub 仓库中设置 Secret
 
 1. **进入仓库设置**
+
    - 打开你的 GitHub 仓库
    - 点击 **Settings**（设置）
 
 2. **找到 Secrets 设置**
+
    - 在左侧菜单中找到 **Secrets and variables** → **Actions**
    - 或者直接访问：`https://github.com/<用户名>/<仓库名>/settings/secrets/actions`
 
 3. **添加新的 Secret**
+
    - 点击 **New repository secret**（新建仓库密钥）
    - **Name**（名称）输入：`GOOGLE_SHEETS_CREDENTIALS`
    - **Secret**（密钥）输入：你的 `credentials.json` 文件的**完整内容**（复制整个 JSON）
@@ -33,11 +37,13 @@
 ## 📝 示例
 
 ### Secret 名称
+
 ```
 GOOGLE_SHEETS_CREDENTIALS
 ```
 
 ### Secret 内容（示例格式）
+
 ```json
 {
   "type": "service_account",
@@ -53,14 +59,23 @@ GOOGLE_SHEETS_CREDENTIALS
 }
 ```
 
+**⚠️ 重要：**
+
+- 必须复制**完整的 JSON 内容**，包括所有大括号 `{}`
+- 确保 JSON 格式正确（可以使用 JSON 验证工具检查）
+- 不要添加额外的引号或转义字符
+- 直接复制粘贴整个文件内容即可
+
 ## ⚠️ 重要提示
 
 1. **完整复制 JSON**
+
    - 必须复制整个 JSON 文件的内容
    - 包括所有的大括号、引号、换行符等
    - 不要修改任何内容
 
 2. **安全性**
+
    - GitHub Secrets 是加密存储的
    - 只有仓库管理员可以查看和修改
    - 不要在代码中硬编码凭证信息
@@ -90,20 +105,30 @@ cat ~/.google-sheets/credentials.json | jq .
 ### 问题：构建时仍然报错找不到凭证文件
 
 **解决方案：**
+
 1. 确认 Secret 名称是 `GOOGLE_SHEETS_CREDENTIALS`（完全一致，区分大小写）
 2. 确认 JSON 内容完整且格式正确
 3. 检查构建日志中的 "Setup Google Sheets credentials" 步骤是否有错误
 
-### 问题：凭证文件格式错误
+### 问题：凭证文件格式错误（SyntaxError: Expected property name）
 
 **解决方案：**
-1. 确保复制的是完整的 JSON 内容
-2. 使用 JSON 验证工具检查格式
-3. 确保没有额外的空格或换行符
+
+1. 确保复制的是完整的 JSON 内容（包括最外层的大括号 `{}`）
+2. 使用 JSON 验证工具检查格式：
+   ```bash
+   # 在本地验证
+   cat ~/.google-sheets/credentials.json | jq .
+   # 或使用在线工具：https://jsonlint.com/
+   ```
+3. 确保没有额外的引号或转义字符
+4. 如果使用文本编辑器，确保保存为纯文本格式
+5. 重新复制整个文件内容，确保没有遗漏任何字符
 
 ### 问题：权限不足
 
 **解决方案：**
+
 1. 确认 Google Service Account 有访问 Google Sheets 的权限
 2. 确认 Service Account 的邮箱已添加到 Google Sheets 的共享列表中
 
@@ -111,4 +136,3 @@ cat ~/.google-sheets/credentials.json | jq .
 
 - [GitHub Secrets 文档](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 - [Google Service Account 文档](https://cloud.google.com/iam/docs/service-accounts)
-

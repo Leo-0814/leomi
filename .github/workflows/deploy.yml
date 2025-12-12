@@ -35,9 +35,30 @@ jobs:
       - name: Setup Google Sheets credentials
         run: |
           mkdir -p ~/.google-sheets
-          echo "${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}" > ~/.google-sheets/credentials.json
-          chmod 600 ~/.google-sheets/credentials.json
-          echo "✅ Google Sheets credentials file created"
+          # Use Node.js to write JSON file to handle special characters properly
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const credentials = process.env.GOOGLE_SHEETS_CREDENTIALS;
+            if (!credentials) {
+              console.error('❌ ERROR: GOOGLE_SHEETS_CREDENTIALS secret is not set');
+              process.exit(1);
+            }
+            try {
+              // Validate JSON format
+              const parsed = JSON.parse(credentials);
+              const filePath = path.join(process.env.HOME, '.google-sheets', 'credentials.json');
+              fs.writeFileSync(filePath, JSON.stringify(parsed, null, 2), 'utf8');
+              fs.chmodSync(filePath, 0o600);
+              console.log('✅ Google Sheets credentials file created and validated');
+            } catch (error) {
+              console.error('❌ ERROR: Invalid JSON format in GOOGLE_SHEETS_CREDENTIALS');
+              console.error(error.message);
+              process.exit(1);
+            }
+          "
+        env:
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
 
       - name: Verify environment
         run: |
