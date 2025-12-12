@@ -185,7 +185,30 @@ function createFilePriorityPlugin(): Plugin {
 }
 
 // https://vite.dev/config/
+// 如果是 GitHub Pages 部署，且仓库名不是 username.github.io，则需要设置 base 路径
+// 例如：如果仓库是 username/leomi，则 base 为 "/leomi/"
+// 如果仓库是 username/username.github.io，则 base 为 "/"
+const getBasePath = () => {
+  // 如果设置了自定义 base 路径环境变量，优先使用
+  if (process.env.VITE_BASE_PATH) {
+    return process.env.VITE_BASE_PATH;
+  }
+  // 在 GitHub Actions 中，GITHUB_REPOSITORY 格式为 "username/repo-name"
+  if (process.env.GITHUB_REPOSITORY) {
+    const repoName = process.env.GITHUB_REPOSITORY.split("/")[1];
+    // 如果仓库名是 username.github.io，说明是用户主页，base 为 "/"
+    if (repoName.endsWith(".github.io")) {
+      return "/";
+    }
+    // 否则，base 为 "/repo-name/"
+    return `/${repoName}/`;
+  }
+  // 本地开发默认使用 "/"
+  return "/";
+};
+
 export default defineConfig({
+  base: getBasePath(),
   plugins: [
     react({
       babel: {

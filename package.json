@@ -1,7 +1,7 @@
 {
-  "name": "tailwind-css",
+  "name": "leomi",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "start": "f() { yarn fetchAll && yarn setV \"$@\" && sh ./script/set_favicon.sh && vite; }; f",
