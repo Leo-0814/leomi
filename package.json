@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "homepage": "/leomi",
   "scripts": {
     "start": "f() { yarn fetchAll && yarn setV \"$@\" && bash ./script/set_favicon.sh && vite; }; f",
     "build": "f() { yarn fetchAll && yarn setV \"$@\" && bash ./script/set_favicon.sh && tsc -b && vite build; }; f",
@@ -10,9 +11,10 @@
     "preview": "vite preview",
     "fetchAll": "node fetchConfig.js all",
     "updateV": "node fetchConfig.js config",
-    "setV": "node setVersion.js \"$@\"",
+    "setV": "f() { node setVersion.js \"$@\" && yarn updateHomepage; }; f",
     "lang": "node fetchConfig.js lang",
-    "build:fast": "./script/buildAllVersionsFast.sh"
+    "build:fast": "./script/buildAllVersionsFast.sh",
+    "updateHomepage": "node updatePackageHomepage.js"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",

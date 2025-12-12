@@ -122,7 +122,7 @@ const ProcessRouter = () => {
 
   return (
     <RouterContext.Provider value={actions}>
-      <Router>
+      <Router basename={import.meta.env.VITE_APP_HOMEPAGE}>
         <LayoutComponent
           props={{
             navType: navType ? navType : { type: "default" },

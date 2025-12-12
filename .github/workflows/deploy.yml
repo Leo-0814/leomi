@@ -74,6 +74,7 @@ jobs:
           VITE_APP_ENV: production
           GITHUB_REPOSITORY: ${{ github.repository }}
           VITE_BASE_PATH: /leomi/
+          VITE_APP_HOMEPAGE: /leomi
           VITE_APP_PRODUCTION_NAME_DEV: leomi
           VITE_APP_PRODUCTION_NAME_DISPLAY: Leomi
           VITE_APP_MOBILE_URL: https://leo-0814.github.io/leomi/

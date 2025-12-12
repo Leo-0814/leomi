@@ -189,11 +189,34 @@ function createFilePriorityPlugin(): Plugin {
 // 例如：如果仓库是 username/leomi，则 base 为 "/leomi/"
 // 如果仓库是 username/username.github.io，则 base 为 "/"
 const getBasePath = () => {
-  // 如果设置了自定义 base 路径环境变量，优先使用
+  // 优先级 1: 环境变量 VITE_BASE_PATH
   if (process.env.VITE_BASE_PATH) {
     return process.env.VITE_BASE_PATH;
   }
-  // 在 GitHub Actions 中，GITHUB_REPOSITORY 格式为 "username/repo-name"
+  
+  // 优先级 2: 从 package.json 的 homepage 字段读取
+  try {
+    const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf-8"));
+    if (packageJson.homepage) {
+      // 确保 homepage 以 / 结尾（Vite base 路径要求）
+      const homepage = packageJson.homepage.startsWith("/") 
+        ? packageJson.homepage 
+        : `/${packageJson.homepage}`;
+      return homepage.endsWith("/") ? homepage : `${homepage}/`;
+    }
+  } catch (error) {
+    // 如果读取失败，继续使用其他方法
+  }
+  
+  // 优先级 3: 环境变量 VITE_APP_HOMEPAGE
+  if (process.env.VITE_APP_HOMEPAGE) {
+    const homepage = process.env.VITE_APP_HOMEPAGE.startsWith("/") 
+      ? process.env.VITE_APP_HOMEPAGE 
+      : `/${process.env.VITE_APP_HOMEPAGE}`;
+    return homepage.endsWith("/") ? homepage : `${homepage}/`;
+  }
+  
+  // 优先级 4: 在 GitHub Actions 中，GITHUB_REPOSITORY 格式为 "username/repo-name"
   if (process.env.GITHUB_REPOSITORY) {
     const repoName = process.env.GITHUB_REPOSITORY.split("/")[1];
     // 如果仓库名是 username.github.io，说明是用户主页，base 为 "/"
@@ -203,7 +226,8 @@ const getBasePath = () => {
     // 否则，base 为 "/repo-name/"
     return `/${repoName}/`;
   }
-  // 本地开发默认使用 "/"
+  
+  // 默认值：本地开发使用 "/"
   return "/";
 };
 
