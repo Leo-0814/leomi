@@ -37,6 +37,7 @@ jobs:
         env:
           VITE_APP_ENV: production
           GITHUB_REPOSITORY: ${{ github.repository }}
+          VITE_BASE_PATH: /leomi/
 
       - name: Copy index.html to 404.html for SPA routing
         run: cp dist/index.html dist/404.html
