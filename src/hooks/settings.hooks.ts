@@ -3,18 +3,11 @@ import { doc, getDoc, runTransaction } from "firebase/firestore";
 import { firebaseRequest } from "../apis";
 import type { FirebaseRequestOptions } from "../apis/data";
 import { TYPE_OPTIONS } from "../enumerations/chargeDetail";
-import type {
-  ChargeDetailItemParamsType,
-  ChargeDetailParamsType,
-} from "../interfaces/chargeDetail";
+import type { SettingsItemParamsType } from "../interfaces/settings";
 import { dbCloud } from "../plugins/firebase";
 
-export const getChargeDetail = async ({
-  params,
-}: {
-  params: ChargeDetailParamsType;
-}) => {
-  const docRef = doc(dbCloud, "charge_lists", params.id || "");
+export const getSettings = async () => {
+  const docRef = doc(dbCloud, "settings/G0Zj1c9s7EzzIcVbIHbY");
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -24,16 +17,16 @@ export const getChargeDetail = async ({
   }
 };
 
-export const addChargeDetailItem = ({
+export const addSettingsItem = ({
   params,
   options,
 }: {
-  params: ChargeDetailItemParamsType;
+  params: SettingsItemParamsType;
   options: FirebaseRequestOptions;
 }) => {
   firebaseRequest({
     action: async () => {
-      const parentDocRef = doc(dbCloud, "charge_lists", params.parentId || "");
+      const parentDocRef = doc(dbCloud, "settings/G0Zj1c9s7EzzIcVbIHbY");
       await runTransaction(dbCloud, async (transaction) => {
         // --- A. 讀取目前的父文件資料 (鎖定資料) ---
         const parentDocSnap = await transaction.get(parentDocRef);
@@ -55,7 +48,6 @@ export const addChargeDetailItem = ({
         const newItem = {
           name: params.name,
           value: params.value,
-          date: params.date,
           createdAt: dayjs().unix(),
         };
         const newItems = { ...currentItem, [dayjs().unix()]: newItem };
@@ -72,16 +64,16 @@ export const addChargeDetailItem = ({
   });
 };
 
-export const editChargeDetailItem = ({
+export const editSettingsItem = ({
   params,
   options,
 }: {
-  params: ChargeDetailItemParamsType;
+  params: SettingsItemParamsType;
   options: FirebaseRequestOptions;
 }) => {
   firebaseRequest({
     action: async () => {
-      const parentDocRef = doc(dbCloud, "charge_lists", params.parentId || "");
+      const parentDocRef = doc(dbCloud, "settings/G0Zj1c9s7EzzIcVbIHbY");
 
       await runTransaction(dbCloud, async (transaction) => {
         // --- A. 讀取目前的父文件資料 (鎖定資料) ---
@@ -112,7 +104,6 @@ export const editChargeDetailItem = ({
           ...currentItem,
           name: params.name,
           value: params.value,
-          date: params.date,
           updatedAt: dayjs().unix(),
         };
 
@@ -128,16 +119,16 @@ export const editChargeDetailItem = ({
   });
 };
 
-export const deleteChargeDetailItem = ({
+export const deleteSettingsItem = ({
   params,
   options,
 }: {
-  params: ChargeDetailItemParamsType;
+  params: SettingsItemParamsType;
   options: FirebaseRequestOptions;
 }) => {
   firebaseRequest({
     action: async () => {
-      const parentDocRef = doc(dbCloud, "charge_lists", params.parentId || "");
+      const parentDocRef = doc(dbCloud, "settings/G0Zj1c9s7EzzIcVbIHbY");
 
       await runTransaction(dbCloud, async (transaction) => {
         // --- A. 讀取目前的父文件資料 (鎖定資料) ---

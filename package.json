@@ -19,6 +19,7 @@
     "@dataconnect/generated": "link:src/dataconnect-generated",
     "@tailwindcss/vite": "^4.1.17",
     "antd": "^6.1.0",
+    "antd-mobile": "^5.42.1",
     "axios": "^1.13.2",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "big.js": "^7.0.1",

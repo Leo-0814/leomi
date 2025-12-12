@@ -2,7 +2,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleFilled,
-  LeftOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import {
@@ -17,34 +16,30 @@ import {
 import type { ColumnType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TYPE_OPTIONS } from "../../enumerations/chargeDetail";
 import { ACTION_MODE } from "../../enumerations/utils";
-import {
-  deleteChargeDetailItem,
-  getChargeDetail,
-} from "../../hooks/chargeDetail.hooks";
+import { deleteSettingsItem, getSettings } from "../../hooks/settings.hooks";
 import type {
-  ChargeDetailDataType,
-  ChargeDetailItemType,
-} from "../../interfaces/chargeDetail";
+  SettingsDataType,
+  SettingsItemType,
+} from "../../interfaces/settings";
 import { moneyFormat } from "../../plugins/numberFormat";
 import { ActionModal } from "./components";
 
-const ChargeDetail = () => {
+const Settings = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const { confirm } = Modal;
-  const [chargeDetail, setChargeDetail] = useState<ChargeDetailDataType>();
-  const navigate = useNavigate();
+  const [settings, setSettings] = useState<SettingsDataType>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [actionMode, setActionMode] = useState<string>(ACTION_MODE.ADD);
   const [selectedItem, setSelectedItem] = useState<
-    ChargeDetailItemType | undefined
+    SettingsItemType | undefined
   >(undefined);
   const [activeKey, setActiveKey] = useState<string>("");
 
-  const handleDelete = (item: ChargeDetailItemType) => {
+  const handleDelete = (item: SettingsItemType) => {
     console.debug("delete item", item);
     confirm({
       title: t("chargeList.delete.title"),
@@ -54,9 +49,8 @@ const ChargeDetail = () => {
       okType: "danger",
       cancelText: t("normal.no"),
       onOk() {
-        deleteChargeDetailItem({
+        deleteSettingsItem({
           params: {
-            parentId: id,
             type: activeKey,
             id: item.id,
             value: item.value,
@@ -64,7 +58,7 @@ const ChargeDetail = () => {
           options: {
             onSuccess: () => {
               message.success(t("normal.success"));
-              getChargeDetailData();
+              getSettingsData();
             },
           },
         });
@@ -75,13 +69,13 @@ const ChargeDetail = () => {
     });
   };
 
-  const handleEdit = (item: ChargeDetailItemType) => {
+  const handleEdit = (item: SettingsItemType) => {
     setActionMode(ACTION_MODE.EDIT);
     setIsAddModalOpen(true);
     setSelectedItem({ ...item, type: activeKey });
   };
 
-  const columns: ColumnType<ChargeDetailItemType>[] = [
+  const columns: ColumnType<SettingsItemType>[] = [
     {
       title: t("normal.item"),
       dataIndex: "name",
@@ -100,11 +94,6 @@ const ChargeDetail = () => {
           </Flex>
         );
       },
-    },
-    {
-      title: t("normal.date"),
-      dataIndex: "date",
-      key: "date",
     },
     {
       title: t("normal.amount"),
@@ -136,7 +125,7 @@ const ChargeDetail = () => {
     },
   ];
 
-  const getTable = (data: ChargeDetailItemType[] | undefined) => {
+  const getTable = (data: SettingsItemType[] | undefined) => {
     return (
       <Table
         dataSource={data}
@@ -151,32 +140,14 @@ const ChargeDetail = () => {
     {
       key: TYPE_OPTIONS.FIXED_INCOME,
       label: t("chargeDetail.fixed.income"),
-      children: getTable(chargeDetail?.fixed_income),
-      extra: moneyFormat(chargeDetail?.fixed_income_value || 0),
+      children: getTable(settings?.fixed_income),
+      extra: moneyFormat(settings?.fixed_income_value || 0),
     },
     {
       key: TYPE_OPTIONS.FIXED_EXPENSES,
       label: t("chargeDetail.fixed.expenses"),
-      children: getTable(chargeDetail?.fixed_expenses),
-      extra: moneyFormat(chargeDetail?.fixed_expenses_value || 0),
-    },
-    {
-      key: TYPE_OPTIONS.DRIVER,
-      label: t("chargeDetail.driver"),
-      children: getTable(chargeDetail?.driver),
-      extra: moneyFormat(chargeDetail?.driver_value || 0),
-    },
-    {
-      key: TYPE_OPTIONS.FOOD,
-      label: t("chargeDetail.food"),
-      children: getTable(chargeDetail?.food),
-      extra: moneyFormat(chargeDetail?.food_value || 0),
-    },
-    {
-      key: TYPE_OPTIONS.OTHER,
-      label: t("chargeDetail.other"),
-      children: getTable(chargeDetail?.other),
-      extra: moneyFormat(chargeDetail?.other_value || 0),
+      children: getTable(settings?.fixed_expenses),
+      extra: moneyFormat(settings?.fixed_expenses_value || 0),
     },
   ];
 
@@ -185,48 +156,34 @@ const ChargeDetail = () => {
     setIsAddModalOpen(true);
   };
 
-  const getChargeDetailData = async () => {
-    const data = await getChargeDetail({ params: { id } });
+  const getSettingsData = async () => {
+    const data = await getSettings();
     if (!data) return;
-    console.debug("charge detail", data);
-    const needReverseData = [
-      TYPE_OPTIONS.FOOD,
-      TYPE_OPTIONS.DRIVER,
-      TYPE_OPTIONS.OTHER,
-    ];
+    console.debug("settings", data);
     const needTranData = [
       TYPE_OPTIONS.FIXED_INCOME,
       TYPE_OPTIONS.FIXED_EXPENSES,
-      TYPE_OPTIONS.FOOD,
-      TYPE_OPTIONS.DRIVER,
-      TYPE_OPTIONS.OTHER,
     ];
     needTranData.forEach((type: string) => {
-      const newItem: ChargeDetailItemType[] = [];
+      const newItem: SettingsItemType[] = [];
       if (Object.keys(data[type]).length > 0) {
         Object.keys(data[type]).map((key: string) => {
           const item = data[type][key];
-          const initItem = {
+          newItem.push({
             id: key,
             name: item?.name || "",
             value: item?.value || 0,
-            date: item?.date || "",
-          };
-          if (needReverseData.includes(type)) {
-            newItem.unshift(initItem);
-          } else {
-            newItem.push(initItem);
-          }
+          });
         });
       }
       data[type] = newItem;
     });
-    setChargeDetail(data as ChargeDetailDataType);
+    setSettings(data as SettingsDataType);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      getChargeDetailData();
+      getSettingsData();
     };
     fetchData();
   }, [id]);
@@ -234,26 +191,24 @@ const ChargeDetail = () => {
   return (
     <>
       <div className="flex flex-row items-center gap-2">
-        <LeftOutlined onClick={() => navigate(-1)} />
-        <div className="text-2xl">{chargeDetail?.name}</div>
+        {/* <LeftOutlined onClick={() => navigate(-1)} /> */}
+        <div className="text-2xl">{t("normal.settings")}</div>
       </div>
       <div className="flex gap-4 text-2xl">
-        <div>{t("chargeDetail.summary")} :</div>
+        <div>{t("settings.fixed.remainder")} :</div>
         <div
           className={`text-2xl flex-1 ${
-            (chargeDetail?.total_value || 0) < 0
-              ? "text-red-500"
-              : "text-green-600"
+            (settings?.total_value || 0) < 0 ? "text-red-500" : "text-green-600"
           }`}
         >
-          {moneyFormat(chargeDetail?.total_value || 0)}
+          {moneyFormat(settings?.total_value || 0)}
         </div>
         <Button type="primary" onClick={() => handleAdd()}>
           <PlusOutlined />
           {t("chargeDetail.add")}
         </Button>
       </div>
-      {chargeDetail && (
+      {settings && (
         <Collapse
           accordion
           expandIconPlacement="end"
@@ -270,10 +225,10 @@ const ChargeDetail = () => {
         onCancel={() => setIsAddModalOpen(false)}
         mode={actionMode}
         item={selectedItem}
-        getChargeDetailData={getChargeDetailData}
+        getSettingsData={getSettingsData}
       />
     </>
   );
 };
 
-export default ChargeDetail;
+export default Settings;

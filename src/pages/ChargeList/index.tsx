@@ -124,7 +124,7 @@ const ChargeList = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <>
       <Flex justify="space-between" align="center">
         <h1 className={styles.title}>{t("chargeList.title")}</h1>
         <Button type="primary" onClick={() => handleAdd()}>
@@ -136,7 +136,7 @@ const ChargeList = () => {
         dataSource={lists}
         columns={columns}
         pagination={false}
-        scroll={{ x: "max-content", y: "80vh" }}
+        scroll={{ x: "max-content", y: "calc(80vh - 65px)" }}
       />
       <ActionModal
         isOpen={isAddModalOpen}
@@ -146,7 +146,7 @@ const ChargeList = () => {
         item={selectedItem}
         getChargeListData={getChargeListData}
       />
-    </div>
+    </>
   );
 };
 

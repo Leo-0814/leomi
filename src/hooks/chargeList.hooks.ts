@@ -26,6 +26,8 @@ export const addChargeItem = ({
     action: () => {
       const counterRef = doc(dbCloud, "counters", "chargeListsCount");
       const newChargeListRef = doc(collection(dbCloud, "charge_lists")); // 先獲取一個新的文件參考（ID稍後決定）
+      const settingsRef = doc(dbCloud, "settings/G0Zj1c9s7EzzIcVbIHbY");
+
       const initData = {
         name: params.name,
         driver: {},
@@ -44,24 +46,27 @@ export const addChargeItem = ({
 
       return runTransaction(dbCloud, async (transaction) => {
         const counterDoc = await transaction.get(counterRef);
-
+        const settingsDoc = await transaction.get(settingsRef);
+        if (!settingsDoc.exists()) {
+          console.debug("settingsDoc not exists");
+        }
+        let newId: number = 0;
         if (!counterDoc.exists()) {
           // 如果計數器不存在，則初始化它
           transaction.set(counterRef, { currentId: 1 });
-          transaction.set(newChargeListRef, {
-            id: 1,
-            ...initData,
-          });
-          return 1; // 第一個 ID 為 1
+          newId = 1;
         }
 
         // 讀取當前 ID，並計算下一個 ID
-        const newId = counterDoc.data().currentId + 1;
+        newId = counterDoc.data()?.currentId
+          ? counterDoc.data()?.currentId + 1
+          : 1;
 
         // 在交易中，將新文件寫入 charge_lists 集合，並指定 ID
         transaction.set(newChargeListRef, {
           id: newId, // 將遞增的數字存為欄位，而不是文件 ID
           ...initData,
+          ...(settingsDoc.exists() ? settingsDoc.data() : {}),
         });
 
         // 更新計數器為下一個 ID
