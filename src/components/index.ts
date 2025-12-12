@@ -1,2 +1,3 @@
+import CustomMessage from "./CustomMessage";
 import Toast from "./Toast";
-export { Toast };
+export { CustomMessage, Toast };

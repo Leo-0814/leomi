@@ -200,4 +200,7 @@ export default defineConfig({
     createFilePriorityPlugin(),
     tailwindcss(),
   ],
+  server: {
+    allowedHosts: [""],
+  },
 });

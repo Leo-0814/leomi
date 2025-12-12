@@ -1,0 +1,17 @@
+.custom-alert {
+  &.ant-alert {
+    color: #fff;
+  }
+  &.ant-alert-success {
+    background: var(--success);
+  }
+  &.ant-alert-info {
+    background: var(--primary-40);
+  }
+  &.ant-alert-warning {
+    background: var(--secondary);
+  }
+  &.ant-alert-error {
+    background: var(--error);
+  }
+}

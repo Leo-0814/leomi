@@ -21,7 +21,6 @@ const nowLangProcess = () => {
 const nowLang = nowLangProcess();
 console.debug("nowLang", nowLang);
 const hasTranslation = Boolean(Object.keys(resources).includes(nowLang));
-console.debug("hasTranslation", resources[nowLang as keyof typeof resources]);
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({

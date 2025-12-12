@@ -5,7 +5,7 @@ import ProcessRouter from "./router/index";
 import FontSetting from "./styles/FontSetting";
 
 const currentTheme = import(
-  `./theme/${import.meta.env.VITE_APP_PROD_NAME_DEV}/theme.json`
+  `./theme/${import.meta.env.VITE_APP_PRODUCTION_NAME_DEV}/theme.json`
 );
 const defaultTheme = import(`./theme/defaultTheme.json`);
 const finalTheme = { ...defaultTheme, ...currentTheme };
@@ -60,7 +60,6 @@ function App() {
     }
 
     if (import.meta.env.VITE_APP_ENV !== "production") {
-      console.debug(import.meta.env.VITE_APP_ENV);
       robotsMeta.setAttribute("content", "noindex");
     } else {
       robotsMeta.setAttribute("content", "index, follow");
