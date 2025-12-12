@@ -17,25 +17,20 @@ import RouterContext, { type NavType } from "./RouterContext";
 type RouteConfig = (typeof RouterList)[number] | null;
 
 const findRouteConfig = (currentPath = ""): RouteConfig => {
+  // Get the base path from Vite (e.g., "/leomi/")
+  const basePath = import.meta.env.BASE_URL || "/";
+  // Remove base path from current path for matching
+  const pathToMatch = currentPath || window.location.pathname;
+  const normalizedPath = pathToMatch.replace(new RegExp(`^${basePath}`), "/") || "/";
+  
   const target = RouterList.find((route) => {
     if (route.path === "/") {
-      // console.debug(
-      //   "route.path",
-      //   route.path,
-      //   "currentPath",
-      //   currentPath ?? window.location.pathname,
-      // );
-      return route.path === (currentPath || window.location.pathname);
+      return normalizedPath === "/" || normalizedPath === "";
     }
     const regex = new RegExp(`^${route.path.replace(/:[^/]*/g, ".*")}$`);
-    // console.log(
-    //   regex,
-    //   currentPath ?? window.location.pathname,
-    //   regex.test(currentPath ?? window.location.pathname)
-    // );
-    return regex.test(currentPath || window.location.pathname);
+    return regex.test(normalizedPath);
   });
-  // console.debug(target);
+  
   if (!target) {
     return null;
   }
